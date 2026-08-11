@@ -40,6 +40,46 @@ def get_users(
 ) -> list[User]:
 
     return db.query(User).all()
+
+def update_user(
+    db: Session,
+    user_id: int,
+    username: str | None = None,
+    email: str | None = None,
+    hashed_password: str | None = None,
+) -> User | None:
+    user = db.query(User).filter(User.id == user_id).first()
+
+    if not user:
+        return None
+
+    if username is not None:
+        user.username = username
+    if email is not None:
+        user.email = email
+    if hashed_password is not None:
+        user.hashed_password = hashed_password
+
+    db.commit()
+    db.refresh(user)
+
+    return user
+
+def delete_user(
+    db: Session,
+    user_id: int,
+) -> bool:
+    user = db.query(User).filter(User.id == user_id).first()
+
+    if not user:
+        return False
+
+    db.delete(user)
+    db.commit()
+
+    return True
+
+
     
 
 """crud/user.py
@@ -51,3 +91,5 @@ get_users()        ⬜
 update_user()      ⬜
 delete_user()      ⬜
 """
+
+
