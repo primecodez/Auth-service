@@ -27,3 +27,27 @@ def get_user_by_id(
     user_id: int,
 ) -> User | None:
     return db.query(User).filter(User.id == user_id).first()
+
+def get_user_by_email(
+    db: Session,
+    email: str,
+) -> User | None:
+
+    return db.query(User).filter(User.email == email).first()
+
+def get_users(
+      db: Session,
+) -> list[User]:
+
+    return db.query(User).all()
+    
+
+"""crud/user.py
+
+create_user()      ✅
+get_user_by_id()   ⬜ ← NEXT
+get_user_by_email()⬜
+get_users()        ⬜
+update_user()      ⬜
+delete_user()      ⬜
+"""
