@@ -82,14 +82,6 @@ def delete_user(
 
     
 
-"""crud/user.py
 
-create_user()      ✅
-get_user_by_id()   ⬜ ← NEXT
-get_user_by_email()⬜
-get_users()        ⬜
-update_user()      ⬜
-delete_user()      ⬜
-"""
 
 
