@@ -1,14 +1,7 @@
 from fastapi import FastAPI
+from app.routers import user
 
-app = FastAPI(title="Authentication Service")
+app = FastAPI()
 
+app.include_router(user.router)
 
-@app.get("/")
-def root():
-    return {"message": "Authentication Service is running!"}
-
-"""POST   /users          → create_user()
-GET    /users/{id}     → get_user_by_id()
-GET    /users          → get_users()
-PUT    /users/{id}     → update_user()
-DELETE /users/{id}     → delete_user()"""
