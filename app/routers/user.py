@@ -13,7 +13,12 @@ def create_user(
     user: UserCreate,
     db: Session = Depends(get_db),
 ):
-    return crud.create_user(db, user)
+    return crud.create_user(
+        db,
+        user.username,
+        user.email,
+        user.password,
+    )
 
 
 @router.get("/{user_id}")
