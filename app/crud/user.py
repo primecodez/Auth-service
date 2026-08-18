@@ -5,21 +5,20 @@ from app.models.user import User
 
 def create_user(
     db: Session,
-    username: str,
-    email: str,
-    hashed_password: str,
+    user: UserCreate,
 ) -> User:
-    user = User(
-        username=username,
-        email=email,
-        hashed_password=hashed_password,
+
+    new_user = User(
+        username=user.username,
+        email=user.email,
+        hashed_password=user.hashed_password,
     )
 
-    db.add(user)
+    db.add(new_user)
     db.commit()
-    db.refresh(user)
+    db.refresh(new_user)
 
-    return user
+    return new_user
 
 
 def get_user_by_id(
