@@ -5,27 +5,31 @@ from app.models.user import User
 
 def create_user(
     db: Session,
-    user: UserCreate,
+    username: str,
+    email: str,
+    hashed_password: str,
 ) -> User:
 
-    new_user = User(
-        username=user.username,
-        email=user.email,
-        hashed_password=user.hashed_password,
+    user = User(
+        username=username,
+        email=email,
+        hashed_password=hashed_password,
     )
 
-    db.add(new_user)
+    db.add(user)
     db.commit()
-    db.refresh(new_user)
+    db.refresh(user)
 
-    return new_user
+    return user
 
 
 def get_user_by_id(
     db: Session,
     user_id: int,
 ) -> User | None:
+
     return db.query(User).filter(User.id == user_id).first()
+
 
 def get_user_by_email(
     db: Session,
@@ -34,11 +38,13 @@ def get_user_by_email(
 
     return db.query(User).filter(User.email == email).first()
 
+
 def get_users(
-      db: Session,
+    db: Session,
 ) -> list[User]:
 
     return db.query(User).all()
+
 
 def update_user(
     db: Session,
@@ -47,6 +53,7 @@ def update_user(
     email: str | None = None,
     hashed_password: str | None = None,
 ) -> User | None:
+
     user = db.query(User).filter(User.id == user_id).first()
 
     if not user:
@@ -54,8 +61,10 @@ def update_user(
 
     if username is not None:
         user.username = username
+
     if email is not None:
         user.email = email
+
     if hashed_password is not None:
         user.hashed_password = hashed_password
 
@@ -64,10 +73,12 @@ def update_user(
 
     return user
 
+
 def delete_user(
     db: Session,
     user_id: int,
 ) -> bool:
+
     user = db.query(User).filter(User.id == user_id).first()
 
     if not user:
@@ -77,10 +88,3 @@ def delete_user(
     db.commit()
 
     return True
-
-
-    
-
-
-
-
