@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.user import User
@@ -7,13 +8,13 @@ def create_user(
     db: Session,
     username: str,
     email: str,
-    hashed_password: str,
+    password: str,
 ) -> User:
 
     user = User(
         username=username,
         email=email,
-        hashed_password=hashed_password,
+        password=password,
     )
 
     db.add(user)
@@ -28,7 +29,9 @@ def get_user_by_id(
     user_id: int,
 ) -> User | None:
 
-    return db.query(User).filter(User.id == user_id).first()
+    statement = select(User).where(User.id == user_id)
+
+    return db.scalars(statement).first()
 
 
 def get_user_by_email(
@@ -36,14 +39,18 @@ def get_user_by_email(
     email: str,
 ) -> User | None:
 
-    return db.query(User).filter(User.email == email).first()
+    statement = select(User).where(User.email == email)
+
+    return db.scalars(statement).first()
 
 
 def get_users(
     db: Session,
 ) -> list[User]:
 
-    return db.query(User).all()
+    statement = select(User)
+
+    return list(db.scalars(statement).all())
 
 
 def update_user(
@@ -54,9 +61,10 @@ def update_user(
     hashed_password: str | None = None,
 ) -> User | None:
 
-    user = db.query(User).filter(User.id == user_id).first()
+    statement = select(User).where(User.id == user_id)
+    user = db.scalars(statement).first()
 
-    if not user:
+    if user is None:
         return None
 
     if username is not None:
@@ -79,9 +87,10 @@ def delete_user(
     user_id: int,
 ) -> bool:
 
-    user = db.query(User).filter(User.id == user_id).first()
+    statement = select(User).where(User.id == user_id)
+    user = db.scalars(statement).first()
 
-    if not user:
+    if user is None:
         return False
 
     db.delete(user)
