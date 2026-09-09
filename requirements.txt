@@ -9,3 +9,4 @@ python-multipart
 python-dotenv
 alembic
 pydantic-settings
+pwdlib[argon2]
