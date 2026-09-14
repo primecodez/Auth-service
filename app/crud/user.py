@@ -4,7 +4,12 @@ from sqlalchemy.orm import Session
 from app.models.user import User
 from utils.security import hash_password
 
-def create_user(db, username, email, password):
+def create_user(
+    db: Session,
+    username: str,
+    email: str,
+    password: str
+) -> User:
     hashed_password = hash_password(password)
 
     user = User(
